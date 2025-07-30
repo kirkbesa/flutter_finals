@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+
+class BottomNavBar extends StatelessWidget {
+  final String currentRoute;
+
+  const BottomNavBar({super.key, required this.currentRoute});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          height: 100,
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildNavItem(
+                context,
+                icon: Icons.home_outlined,
+                label: 'Home',
+                route: '/home',
+                isActive: currentRoute == '/home',
+              ),
+              _buildNavItem(
+                context,
+                icon: Icons.mail_outline_rounded,
+                label: 'Inbox',
+                route: '/inbox',
+                isActive: currentRoute == '/inbox',
+              ),
+              _buildNavItem(
+                context,
+                icon: Icons.qr_code_scanner_rounded,
+                label: 'QR',
+                route: '/qr',
+                isActive: currentRoute == '/qr',
+                isCenter: true,
+              ),
+              _buildNavItem(
+                context,
+                icon: Icons.receipt_long_rounded,
+                label: 'History',
+                route: '/transactions',
+                isActive: currentRoute == '/transactions',
+              ),
+              _buildNavItem(
+                context,
+                icon: Icons.person,
+                label: 'Profile',
+                route: '/profile',
+                isActive: currentRoute == '/profile',
+              ),
+            ],
+          ),
+        ),
+        // QR Icon with circle and outline
+        Positioned(
+          bottom: 50,
+          left: MediaQuery.of(context).size.width / 2 - 40,
+          child: Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(color: Colors.blue, width: 3.0),
+            ),
+            child: IconButton(
+              icon: Icon(
+                Icons.qr_code_scanner_rounded,
+                color: Colors.blue.withOpacity(1),
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/qr');
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNavItem(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String route,
+    required bool isActive,
+    bool isCenter = false,
+  }) {
+    final opacity = isActive ? 1.0 : 0.5;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacementNamed(context, route);
+      },
+      child: Column(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: isCenter ? Colors.white : Colors.blue.withOpacity(opacity),
+            size: isCenter ? 40 : 30,
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w400,
+              color: Colors.blue.withOpacity(opacity),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_finals/login.dart';
-import 'home.dart';
 import 'loading.dart';
 import 'mpin.dart';
+import 'home.dart';
+import 'inbox.dart';
+import 'qr.dart';
+import 'transactions.dart';
+import 'profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +22,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Basic Flutter App',
       theme: ThemeData(
-        // Set custom color in the theme
-        primaryColor: customBlue, // Main blue color
-        scaffoldBackgroundColor: customBlue.withOpacity(
-          0.1,
-        ), // Light background with custom blue
+        primaryColor: customBlue,
+        scaffoldBackgroundColor: customBlue.withOpacity(0.1),
         primarySwatch: MaterialColor(customBlue.value, {
           50: customBlue.withOpacity(0.1),
           100: customBlue.withOpacity(0.2),
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Loading(),
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
+        '/inbox': (context) => const Inbox(),
+        '/qr': (context) => const QRPage(),
+        '/transactions': (context) => const Transactions(),
+        '/profile': (context) => const Profile(),
         '/mpin': (context) => const MPINScreen(),
       },
     );

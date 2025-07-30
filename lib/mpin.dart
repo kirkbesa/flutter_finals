@@ -50,7 +50,7 @@ class _MPINScreenState extends State<MPINScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("OK"),
-          )
+          ),
         ],
       ),
     );
@@ -101,8 +101,9 @@ class _MPINScreenState extends State<MPINScreen> {
       shrinkWrap: true,
       itemCount: keys.length,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+      ),
       itemBuilder: (_, index) {
         String key = keys[index];
         if (key == '') return const SizedBox.shrink();
@@ -128,7 +129,10 @@ class _MPINScreenState extends State<MPINScreen> {
             const SizedBox(height: 40),
             Column(
               children: [
-                Image.asset('assets/gcash_logo.png', height: 70), // Optional
+                Image.asset(
+                  'images/logo_horizontal_white.png',
+                  height: 70,
+                ), // Optional
                 const Text(
                   "GCash",
                   style: TextStyle(
@@ -145,7 +149,9 @@ class _MPINScreenState extends State<MPINScreen> {
                 const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 12, horizontal: 24),
+                    vertical: 12,
+                    horizontal: 24,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(30),
@@ -179,7 +185,7 @@ class _MPINScreenState extends State<MPINScreen> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

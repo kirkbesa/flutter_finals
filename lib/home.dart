@@ -124,7 +124,12 @@ class Home extends StatelessWidget {
                                               ),
                                             ),
                                             TextButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.pushReplacementNamed(
+                                                  context,
+                                                  '/cash-in',
+                                                );
+                                              },
                                               style: TextButton.styleFrom(
                                                 backgroundColor: Colors.white,
                                               ),
@@ -163,6 +168,12 @@ class Home extends StatelessWidget {
                                       context: context,
                                       label: 'Send',
                                       icon: Icons.payments_rounded,
+                                      onClick: () {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          '/send-money',
+                                        );
+                                      },
                                     ),
                                     _featureButton(
                                       context: context,
@@ -382,6 +393,7 @@ Widget _featureButton({
   required BuildContext context,
   required String label,
   required IconData icon,
+  VoidCallback? onClick,
 }) {
   Color customBlue = Theme.of(context).primaryColor;
 
@@ -392,7 +404,10 @@ Widget _featureButton({
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 10,
         children: [
-          Icon(icon, color: customBlue, size: 40),
+          GestureDetector(
+            onTap: onClick,
+            child: Icon(icon, color: customBlue, size: 40),
+          ),
           Text(
             label,
             style: TextStyle(

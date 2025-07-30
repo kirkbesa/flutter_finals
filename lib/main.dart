@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finals/cash-in.dart';
 import 'package:flutter_finals/login.dart';
+import 'package:flutter_finals/send-money.dart';
 import 'loading.dart';
 import 'mpin.dart';
 import 'home.dart';
@@ -46,6 +48,8 @@ class MyApp extends StatelessWidget {
         '/qr': (context) => const QRPage(),
         '/transactions': (context) => const Transactions(),
         '/profile': (context) => const Profile(),
+        '/send-money': (context) => const SendMoney(),
+        '/cash-in': (context) => const CashIn(),
         '/mpin': (context) => const MPINScreen(),
       },
     );

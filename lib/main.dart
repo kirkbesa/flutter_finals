@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_finals/login.dart';
 import 'home.dart';
 import 'loading.dart';
+import 'mpin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Loading(),
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
+        '/mpin': (context) => const MPINScreen(),
       },
     );
   }

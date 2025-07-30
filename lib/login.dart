@@ -7,13 +7,13 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFF1f71fa), // Blue background color
+        color: const Color(0xFF1f71fa), // Blue background color
         child: Column(
           children: [
             // Top Part
             Expanded(
               child: Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(0, 200, 0, 100),
+                padding: const EdgeInsets.fromLTRB(0, 200, 0, 100),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -21,18 +21,18 @@ class Login extends StatelessWidget {
                     Column(
                       children: [
                         // Logo
-                        Image(
+                        const Image(
                           image: AssetImage('images/logo_horizontal_white.png'),
                           width: 400,
                           height: 100,
                         ),
                         // Good Day!
-                        Text(
+                        const Text(
                           'Good Day!',
                           style: TextStyle(
-                            fontFamily: 'Poppins', // Poppins SemiBold font
-                            fontWeight: FontWeight.w600, // SemiBold weight
-                            color: Colors.white, // White text color
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
                             fontSize: 20,
                           ),
                         ),
@@ -42,12 +42,12 @@ class Login extends StatelessWidget {
                           width: 250,
                           height: 55,
                           decoration: BoxDecoration(
-                            color: Color(0xFF1168f1),
+                            color: const Color(0xFF1168f1),
                             border: Border.all(color: Colors.blue, width: 1),
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          child: Padding(
-                            padding: EdgeInsetsGeometry.fromLTRB(20, 0, 20, 0),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -60,11 +60,10 @@ class Login extends StatelessWidget {
                                     fontSize: 20,
                                   ),
                                 ),
-                                const Icon(
-                                  Icons
-                                      .swap_horiz_rounded, // Using the built-in 'keyboard' icon (you can change this to another icon)
-                                  size: 30, // Icon size
-                                  color: Colors.blue, // Icon color
+                                Icon(
+                                  Icons.swap_horiz_rounded,
+                                  size: 30,
+                                  color: Colors.blue,
                                 ),
                               ],
                             ),
@@ -72,39 +71,42 @@ class Login extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // MPIN Login
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      width: 170,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsGeometry.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons
-                                  .dialpad_sharp, // Using the built-in 'keyboard' icon (you can change this to another icon)
-                              size: 60, // Icon size
-                              color: Colors.blue, // Icon color
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ), // Space between icon and text
-                            Text(
-                              'MPIN Login',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
+
+                    // MPIN Login - Now Clickable
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, '/mpin');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        width: 170,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.dialpad_sharp,
+                                size: 60,
                                 color: Colors.blue,
-                                fontSize: 14,
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 20),
+                              Text(
+                                'MPIN Login',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.blue,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -115,39 +117,34 @@ class Login extends StatelessWidget {
 
             // Bottom Part
             Container(
-              height: 100, // Fixed height
-              decoration: BoxDecoration(
+              height: 100,
+              decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: Colors.white38, // Border color
-                    width: 1.0, // Border width
+                    color: Colors.white38,
+                    width: 1.0,
                   ),
                 ),
               ),
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Center the row content
-                children: [
-                  // "Help Center" text
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
                   Text(
                     'Help Center',
                     style: TextStyle(
-                      fontFamily: 'Poppins', // Poppins SemiBold font
-                      fontWeight: FontWeight.w600, // SemiBold weight
-                      color: Colors.white, // White text color
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
-                  const SizedBox(
-                    width: 60,
-                  ), // Add space between the two text elements
-                  // "Forgot MPIN?" text
+                  SizedBox(width: 60),
                   Text(
                     'Forgot MPIN?',
                     style: TextStyle(
-                      fontFamily: 'Poppins', // Poppins SemiBold font
-                      fontWeight: FontWeight.w600, // SemiBold weight
-                      color: Colors.white, // White text color
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                       fontSize: 16,
                     ),
                   ),

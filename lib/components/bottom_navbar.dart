@@ -91,7 +91,8 @@ class BottomNavBar extends StatelessWidget {
     required bool isActive,
     bool isCenter = false,
   }) {
-    final opacity = isActive ? 1.0 : 0.5;
+    final alphaValue = isActive ? 1.0 : 0.5;
+    Color customBlue = Theme.of(context).primaryColor;
 
     return GestureDetector(
       onTap: () {
@@ -103,7 +104,9 @@ class BottomNavBar extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: isCenter ? Colors.white : Colors.blue.withOpacity(opacity),
+            color: isCenter
+                ? Colors.white
+                : customBlue.withValues(alpha: alphaValue),
             size: isCenter ? 40 : 30,
           ),
           Text(
@@ -111,7 +114,7 @@ class BottomNavBar extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
-              color: Colors.blue.withOpacity(opacity),
+              color: customBlue.withValues(alpha: alphaValue),
               fontSize: 10,
             ),
           ),

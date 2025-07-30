@@ -210,6 +210,8 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
       // Navigate to the home page if the pin is correct
       Navigator.pushReplacementNamed(context, '/home');
     } else {
+      // Reset Pin
+      pin.clear();
       // Show modal if the pin is incorrect
       showDialog(
         context: context,
@@ -238,250 +240,248 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
         // Close the bottom sheet when tapping outside
         Navigator.pop(context);
       },
-      child: Container(
-        height: 450,
-        padding: const EdgeInsets.only(top: 50, bottom: 100),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+      child: IntrinsicHeight(
+        child: Container(
+          padding: const EdgeInsets.only(top: 100, bottom: 100),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // Pin indicator (4 circles)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: CircleAvatar(
-                    backgroundColor: index < pin.length
-                        ? Colors.blue
-                        : Colors.blueGrey,
-                    radius: 6,
-                  ),
-                );
-              }),
-            ),
-            const SizedBox(height: 20),
-            // Keypad
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    _addDigit('1');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '1',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            spacing: 50,
+            children: [
+              // Pin indicator (4 circles)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(4, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: CircleAvatar(
+                      backgroundColor: index < pin.length
+                          ? Colors.blue
+                          : Colors.blueGrey,
+                      radius: 6,
+                    ),
+                  );
+                }),
+              ),
+              // Keypad
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('1');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '1',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('2');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '2',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('2');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '2',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('3');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '3',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('3');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '3',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    _addDigit('4');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '4',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('4');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '4',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('5');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '5',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('5');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '5',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('6');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '6',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('6');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '6',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    _addDigit('7');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '7',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('7');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '7',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('8');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '8',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('8');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '8',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('9');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '9',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('9');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '9',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    _addDigit('');
-                  },
-                  child: Text(
-                    '0',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      fontSize: 25,
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('');
+                    },
+                    child: Text(
+                      '0',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _addDigit('0');
-                    if (pin.length == 4) {
-                      _checkPin();
-                    }
-                  },
-                  child: Text(
-                    '0',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                      fontSize: 25,
+                  TextButton(
+                    onPressed: () {
+                      _addDigit('0');
+                      if (pin.length == 4) {
+                        _checkPin();
+                      }
+                    },
+                    child: Text(
+                      '0',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _removeDigit();
-                  },
-                  child: Icon(Icons.backspace, size: 20, color: Colors.blue),
-                ),
-              ],
-            ),
-          ],
+                  TextButton(
+                    onPressed: () {
+                      _removeDigit();
+                    },
+                    child: Icon(Icons.backspace, size: 20, color: Colors.blue),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

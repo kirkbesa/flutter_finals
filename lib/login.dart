@@ -187,7 +187,7 @@ class MPINLoginDrawer extends StatefulWidget {
 
 class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
   List<String> pin = [];
-  final String correctPin = '1234'; // Default correct pin
+  final String correctPin = '2222'; // Default correct pin
 
   void _addDigit(String digit) {
     if (pin.length < 4) {

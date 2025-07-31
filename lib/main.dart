@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finals/bpi-cash-in.dart';
 import 'package:flutter_finals/cash-in.dart';
 import 'package:flutter_finals/login.dart';
 import 'package:flutter_finals/send-money.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const Profile(),
         '/send-money': (context) => const SendMoney(),
         '/cash-in': (context) => const CashIn(),
+        '/bpi-cash-in': (context) => const BPICashIn(),
         '/mpin': (context) => const MPINScreen(),
       },
     );

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const BPICashIn(),
+        '/': (context) => const Loading(),
         '/login': (context) => const Login(),
         '/home': (context) => const Home(),
         '/inbox': (context) => const Inbox(),

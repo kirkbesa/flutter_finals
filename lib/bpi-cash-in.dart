@@ -208,10 +208,7 @@ class _BPICashInState extends State<BPICashIn> {
                             style: TextButton.styleFrom(
                               backgroundColor: _isButtonEnabled
                                   ? customBlue
-                                  : Colors.grey[300], // ✅ grey when disabled
-                              foregroundColor: _isButtonEnabled
-                                  ? Colors.white
-                                  : Colors.grey[600],
+                                  : customBlue.withValues(alpha: 0.5),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 20,
@@ -226,6 +223,7 @@ class _BPICashInState extends State<BPICashIn> {
                                 fontFamily: 'Poppins',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
                           ),

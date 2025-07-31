@@ -33,7 +33,7 @@ class Profile extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "+63 912 345 6789",
+                      "092738039355",
                       style: TextStyle(color: Colors.white70),
                     ),
                   ],

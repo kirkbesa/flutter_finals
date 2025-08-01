@@ -16,7 +16,7 @@ import 'profile.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => AccountState(initialBalance: 15000.0),
+      create: (_) => AccountState(),
       child: MyApp(),
     ),
   );

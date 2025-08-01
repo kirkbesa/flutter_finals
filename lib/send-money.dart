@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'account-state.dart';
 
 class SendMoney extends StatefulWidget {
   const SendMoney({super.key});
@@ -16,10 +18,9 @@ class _SendMoneyState extends State<SendMoney> {
   bool _showNextButton = false;
   bool _showAmountError = false;
   String _amountErrorMessage = '';
-  double _availableBalance = 15750.50; // Example balance
 
   @override
-  void initState() {
+  void initState() {  
     super.initState();
     _phoneController.addListener(_validatePhone);
     _amountController.addListener(_validateAmount);
@@ -58,7 +59,7 @@ class _SendMoneyState extends State<SendMoney> {
         if (parsedAmount == null || parsedAmount <= 0) {
           _showAmountError = true;
           _amountErrorMessage = 'Amount cannot be 0';
-        } else if (parsedAmount > _availableBalance) {
+        } else if (parsedAmount > context.read<AccountState>().balance) {
           _showAmountError = true;
           _amountErrorMessage = 'The amount exceeds your balance.';
         } else {
@@ -358,7 +359,7 @@ class _SendMoneyState extends State<SendMoney> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: Text(
-                                    'Available Balance: PHP ${_availableBalance.toStringAsFixed(2)}',
+                                    'Available Balance: PHP ${context.watch<AccountState>().balance.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 12,
@@ -422,6 +423,9 @@ class _SendMoneyState extends State<SendMoney> {
                       // Handle next button press
                       print('Phone: ${_phoneController.text}');
                       print('Amount: ${_amountController.text}');
+                      context.read<AccountState>().balance -=
+                          double.tryParse(_amountController.text) ?? 0;
+                      print('${context.read<AccountState>().balance}');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: customBlue,

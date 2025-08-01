@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'account-state.dart';
 
 class BPICashIn extends StatefulWidget {
   const BPICashIn({super.key});
@@ -203,6 +205,11 @@ class _BPICashInState extends State<BPICashIn> {
                                     print(
                                       'NEXT clicked with amount: ${_amountController.text}',
                                     );
+                                    context.read<AccountState>().balance += double.tryParse(_amountController.text) ?? 0;
+                                    print(
+                                      '${context.read<AccountState>().balance}',
+                                    );
+                                    
                                   }
                                 : null, // ✅ disables button when false
                             style: TextButton.styleFrom(

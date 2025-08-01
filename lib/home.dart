@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/bottom_navbar.dart';
+import 'package:provider/provider.dart';
+import 'account-state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -115,7 +117,7 @@ class Home extends StatelessWidget {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              'P 999,999.44',
+                                              '₱ ${context.watch<AccountState>().balance.toStringAsFixed(2)}',
                                               style: TextStyle(
                                                 fontFamily: 'Karla',
                                                 fontWeight: FontWeight.w600,

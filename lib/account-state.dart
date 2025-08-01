@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AccountState extends ChangeNotifier {
   double _balance;
 
-  AccountState({double initialBalance = 0.0}) : _balance = initialBalance;
+  AccountState({double initialBalance = 15000.00}) : _balance = initialBalance;
 
   double get balance => _balance;
 

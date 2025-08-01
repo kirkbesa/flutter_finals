@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finals/account-state.dart';
 import 'package:flutter_finals/bpi-cash-in.dart';
 import 'package:flutter_finals/cash-in.dart';
 import 'package:flutter_finals/login.dart';
 import 'package:flutter_finals/send-money.dart';
+import 'package:provider/provider.dart';
 import 'loading.dart';
 import 'mpin.dart';
 import 'home.dart';
@@ -12,7 +14,12 @@ import 'transactions.dart';
 import 'profile.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AccountState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

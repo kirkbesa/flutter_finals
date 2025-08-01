@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'account-state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +39,7 @@ class Login extends StatelessWidget {
                     children: [
                       // Logo
                       const Image(
-                        image: AssetImage('images/logo_horizontal_white.png'),
+                        image: AssetImage('assets/images/logo_horizontal_white.png'),
                         width: 400,
                         height: 100,
                       ),
@@ -186,7 +188,7 @@ class MPINLoginDrawer extends StatefulWidget {
 
 class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
   List<String> pin = [];
-  final String correctPin = '2222'; // Default correct pin
+  final String phoneNumber = '092738039355';
 
   void _addDigit(String digit) {
     if (pin.length < 4) {
@@ -204,31 +206,46 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
     }
   }
 
-  void _checkPin() {
-    if (pin.join() == correctPin) {
-      // Navigate to the home page if the pin is correct
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      // Reset Pin
-      pin.clear();
-      // Show modal if the pin is incorrect
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Incorrect MPIN'),
-            content: const Text('Please try again.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Try Again'),
-              ),
-            ],
+  Future<void> _checkPin() async {
+    if (pin.length == 4) {
+      final accountState = context.read<AccountState>();
+      
+      try {
+        final success = await accountState.login(phoneNumber, pin.join());
+        
+        // Check if widget is still mounted before accessing context
+        if (!mounted) return;
+        
+        if (success) {
+          // Navigate to the home page if login is successful
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          // Show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(accountState.error ?? 'Login failed'),
+              backgroundColor: Colors.red,
+            ),
           );
-        },
-      );
+          // Reset Pin
+          setState(() {
+            pin.clear();
+          });
+        }
+      } catch (e) {
+        // Check if widget is still mounted before accessing context
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {
+          pin.clear();
+        });
+      }
     }
   }
 

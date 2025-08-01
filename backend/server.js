@@ -237,6 +237,41 @@ app.put('/api/balance', async (req, res) => {
   }
 });
 
+// Change MPIN
+app.put('/api/change-mpin', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const { currentMpin, newMpin } = req.body;
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Verify current MPIN
+    const isValidCurrentMpin = await bcrypt.compare(currentMpin, user.mpin);
+    if (!isValidCurrentMpin) {
+      return res.status(400).json({ error: 'Current MPIN is incorrect' });
+    }
+
+    // Hash new MPIN
+    const hashedNewMpin = await bcrypt.hash(newMpin, 10);
+    user.mpin = hashedNewMpin;
+    await user.save();
+
+    res.json({
+      message: 'MPIN changed successfully'
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 }); 

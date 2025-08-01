@@ -203,6 +203,38 @@ class ApiService {
     }
   }
 
+  // Change MPIN
+  static Future<Map<String, dynamic>> changeMpin(String currentMpin, String newMpin) async {
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No authentication token');
+      }
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/change-mpin'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'currentMpin': currentMpin,
+          'newMpin': newMpin,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+      
+      if (response.statusCode == 200) {
+        return data;
+      } else {
+        throw Exception(data['error'] ?? 'Failed to change MPIN');
+      }
+    } catch (e) {
+      throw Exception('Network error: $e');
+    }
+  }
+
   // Logout
   static Future<void> logout() async {
     await removeToken();

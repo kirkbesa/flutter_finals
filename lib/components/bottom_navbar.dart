@@ -23,7 +23,7 @@ class BottomNavBar extends StatelessWidget {
                 route: '/home',
                 isActive: currentRoute == '/home',
               ),
-              _buildNavItem(
+              _buildNavItemWithNotification(
                 context,
                 icon: Icons.mail_outline_rounded,
                 label: 'Inbox',
@@ -41,7 +41,7 @@ class BottomNavBar extends StatelessWidget {
               _buildNavItem(
                 context,
                 icon: Icons.receipt_long_rounded,
-                label: 'History',
+                label: 'Transactions',
                 route: '/transactions',
                 isActive: currentRoute == '/transactions',
               ),
@@ -108,6 +108,62 @@ class BottomNavBar extends StatelessWidget {
                 ? Colors.white
                 : customBlue.withValues(alpha: alphaValue),
             size: isCenter ? 40 : 30,
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w400,
+              color: customBlue.withValues(alpha: alphaValue),
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItemWithNotification(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String route,
+    required bool isActive,
+    bool isCenter = false,
+  }) {
+    final alphaValue = isActive ? 1.0 : 0.5;
+    Color customBlue = Theme.of(context).primaryColor;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacementNamed(context, route);
+      },
+      child: Column(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              Icon(
+                icon,
+                color: isCenter
+                    ? Colors.white
+                    : customBlue.withValues(alpha: alphaValue),
+                size: isCenter ? 40 : 30,
+              ),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ],
           ),
           Text(
             label,

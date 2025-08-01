@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../components/bottom_navbar.dart'; // adjust path if needed
+import 'components/bottom_navbar.dart';
+import 'mpin-change.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -46,11 +47,39 @@ class Profile extends StatelessWidget {
               children: [
                 const SizedBox(height: 10),
                 _buildOption(
-                    icon: Icons.person_outline, label: "Personal Info"),
-                _buildOption(icon: Icons.security, label: "Security Settings"),
-                _buildOption(icon: Icons.help_outline, label: "Help Center"),
+                    icon: Icons.person_outline, 
+                    label: "Personal Info",
+                    onTap: () {
+                      // Add personal info navigation here
+                    }
+                ),
+                _buildOption(
+                    icon: Icons.security, 
+                    label: "Security Settings",
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MPINChangeScreen(),
+                        ),
+                      );
+                    }
+                ),
+                _buildOption(
+                    icon: Icons.help_outline, 
+                    label: "Help Center",
+                    onTap: () {
+                      // Add help center navigation here
+                    }
+                ),
                 const Divider(),
-                _buildOption(icon: Icons.logout, label: "Log Out"),
+                _buildOption(
+                    icon: Icons.logout, 
+                    label: "Log Out",
+                    onTap: () {
+                      // Add logout logic here
+                    }
+                ),
               ],
             ),
           ),
@@ -60,16 +89,14 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildOption({required IconData icon, required String label}) {
+  Widget _buildOption({required IconData icon, required String label, VoidCallback? onTap}) {
     return Column(
       children: [
         ListTile(
           leading: Icon(icon, color: Colors.blue[800]),
           title: Text(label),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {
-            // Add your navigation or logic here
-          },
+          onTap: onTap,
         ),
         const Divider(height: 0),
       ],

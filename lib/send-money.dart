@@ -59,7 +59,7 @@ class _SendMoneyState extends State<SendMoney> {
         if (parsedAmount == null || parsedAmount <= 0) {
           _showAmountError = true;
           _amountErrorMessage = 'Amount cannot be 0';
-        } else if (parsedAmount > context.read<AccountState>().balance) {
+        } else if (parsedAmount > Provider.of<AccountState>(context, listen: false).balance) {
           _showAmountError = true;
           _amountErrorMessage = 'The amount exceeds your balance.';
         } else {
@@ -420,12 +420,16 @@ class _SendMoneyState extends State<SendMoney> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle next button press
-                      print('Phone: ${_phoneController.text}');
-                      print('Amount: ${_amountController.text}');
-                      context.read<AccountState>().balance -=
-                          double.tryParse(_amountController.text) ?? 0;
-                      print('${context.read<AccountState>().balance}');
+                      _validateAmount(); // Re-validate the amount
+                    
+                      // Only proceed if there is no amount error and the button should be shown
+                      if (!_showAmountError && _showNextButton) {
+                        print('Phone: ${_phoneController.text}');
+                        print('Amount: ${_amountController.text}');
+                        context.read<AccountState>().balance -=
+                            double.tryParse(_amountController.text) ?? 0;
+                        print('${context.read<AccountState>().balance}');
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: customBlue,

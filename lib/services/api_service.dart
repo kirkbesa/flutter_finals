@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/user.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:3001/api';
+  static const String baseUrl = 'http://127.0.0.1:3001/api';
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   // Get stored token
@@ -206,5 +206,37 @@ class ApiService {
   // Logout
   static Future<void> logout() async {
     await removeToken();
+  }
+
+  // Update MPIN
+  static Future<Map<String, dynamic>> updateMpin(String currentMpin, String newMpin) async {
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No authentication token');
+      }
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/mpin'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'currentMpin': currentMpin,
+          'newMpin': newMpin,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+      
+      if (response.statusCode == 200) {
+        return data;
+      } else {
+        throw Exception(data['error'] ?? 'Failed to update MPIN');
+      }
+    } catch (e) {
+      throw Exception('Network error: $e');
+    }
   }
 } 

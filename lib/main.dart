@@ -12,6 +12,7 @@ import 'inbox.dart';
 import 'qr.dart';
 import 'transactions.dart';
 import 'profile.dart';
+import 'change-mpin.dart';
 
 void main() {
   runApp(
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         '/cash-in': (context) => const CashIn(),
         '/bpi-cash-in': (context) => const BPICashIn(),
         '/mpin': (context) => const MPINScreen(),
+        '/change-mpin': (context) => const ChangeMpinScreen(),
       },
     );
   }

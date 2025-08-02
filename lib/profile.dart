@@ -179,6 +179,8 @@ class Profile extends StatelessWidget {
                   );
                 }
               }
+            } else if (label == "Security Settings") {
+              Navigator.pushNamed(context, '/change-mpin');
             } else {
               // Add your navigation or logic here for other options
             }

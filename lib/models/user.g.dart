@@ -25,7 +25,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
 };
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
-  id: json['id'] as String,
+  id: json['_id'] as String?,
   type: json['type'] as String,
   amount: (json['amount'] as num).toDouble(),
   recipient: json['recipient'] as String?,
@@ -35,7 +35,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'type': instance.type,
       'amount': instance.amount,
       'recipient': instance.recipient,

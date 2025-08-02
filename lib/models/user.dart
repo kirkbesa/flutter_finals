@@ -24,7 +24,8 @@ class User {
 
 @JsonSerializable()
 class Transaction {
-  final String id;
+  @JsonKey(name: '_id')
+  final String? id;
   final String type;
   final double amount;
   final String? recipient;
@@ -32,7 +33,7 @@ class Transaction {
   final DateTime timestamp;
 
   Transaction({
-    required this.id,
+    this.id,
     required this.type,
     required this.amount,
     this.recipient,

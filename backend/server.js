@@ -170,6 +170,8 @@ app.get('/api/transactions', async (req, res) => {
 // Send money
 app.post('/api/send-money', async (req, res) => {
   try {
+    console.log('Send money request received:', req.body);
+    
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
@@ -178,12 +180,18 @@ app.post('/api/send-money', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
     const { recipient, amount, description } = req.body;
 
+    console.log('Decoded token userId:', decoded.userId);
+    console.log('Recipient:', recipient, 'Amount:', amount, 'Description:', description);
+
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    console.log('User found, current balance:', user.balance);
+
     if (user.balance < amount) {
+      console.log('Insufficient balance. Required:', amount, 'Available:', user.balance);
       return res.status(400).json({ error: 'Insufficient balance' });
     }
 
@@ -199,13 +207,65 @@ app.post('/api/send-money', async (req, res) => {
 
     await user.save();
 
+    console.log('Transaction saved, new balance:', user.balance);
+    console.log('Latest transaction:', user.transactions[user.transactions.length - 1]);
+
     res.json({
       message: 'Money sent successfully',
       newBalance: user.balance,
       transaction: user.transactions[user.transactions.length - 1]
     });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Send money error:', error);
+    res.status(500).json({ error: 'Server error: ' + error.message });
+  }
+});
+
+// Cash in
+app.post('/api/cash-in', async (req, res) => {
+  try {
+    console.log('Cash-in request received:', req.body);
+    
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const { amount, description } = req.body;
+
+    console.log('Decoded token userId:', decoded.userId);
+    console.log('Amount:', amount, 'Description:', description);
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.log('User found, current balance:', user.balance);
+
+    // Update user's balance and add transaction
+    user.balance += amount;
+    user.transactions.push({
+      type: 'cash-in',
+      amount: amount,
+      description: description || 'Cash In',
+      timestamp: new Date()
+    });
+
+    await user.save();
+
+    console.log('Transaction saved, new balance:', user.balance);
+    console.log('Latest transaction:', user.transactions[user.transactions.length - 1]);
+
+    res.json({
+      message: 'Cash in successful',
+      newBalance: user.balance,
+      transaction: user.transactions[user.transactions.length - 1]
+    });
+  } catch (error) {
+    console.error('Cash-in error:', error);
+    res.status(500).json({ error: 'Server error: ' + error.message });
   }
 });
 

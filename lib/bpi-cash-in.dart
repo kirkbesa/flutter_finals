@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'account-state.dart';
+import 'services/api_service.dart';
 
 class BPICashIn extends StatefulWidget {
   const BPICashIn({super.key});
@@ -146,9 +147,7 @@ class _BPICashInState extends State<BPICashIn> {
                                             decoration: InputDecoration(
                                               hintText: '0.00',
                                               hintStyle: TextStyle(
-                                                color: Colors.grey.withOpacity(
-                                                  0.5,
-                                                ),
+                                                color: Colors.grey.withValues(alpha: 0.5),
                                               ),
                                               border: InputBorder.none,
                                               isDense: true,
@@ -200,16 +199,71 @@ class _BPICashInState extends State<BPICashIn> {
                           width: double.infinity,
                           child: TextButton(
                             onPressed: _isButtonEnabled
-                                ? () {
+                                ? () async {
                                     // ✅ Only triggers when input has value
-                                    print(
-                                      'NEXT clicked with amount: ${_amountController.text}',
-                                    );
-                                    context.read<AccountState>().balance += double.tryParse(_amountController.text) ?? 0;
-                                    print(
-                                      '${context.read<AccountState>().balance}',
-                                    );
+                                    final amount = double.tryParse(_amountController.text) ?? 0;
+                                    final scaffoldMessenger = ScaffoldMessenger.of(context);
+                                    final navigator = Navigator.of(context);
+                                    final accountState = context.read<AccountState>();
                                     
+                                    try {
+                                      // Show loading dialog
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return const AlertDialog(
+                                            content: Row(
+                                              children: [
+                                                CircularProgressIndicator(),
+                                                SizedBox(width: 20),
+                                                Text("Processing cash in..."),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+
+                                      // Call cash-in API
+                                      print('Calling cash-in API with amount: $amount');
+                                      final result = await ApiService.cashIn(amount, 'Cash In via BPI');
+                                      print('Cash-in API result: $result');
+                                      
+                                      // Check if widget is still mounted before using context
+                                      if (!mounted) return;
+                                      
+                                      // Update local state
+                                      accountState.balance = result['newBalance'];
+                                      
+                                      // Close loading dialog
+                                      navigator.pop();
+                                      
+                                      // Show success message
+                                      scaffoldMessenger.showSnackBar(
+                                        SnackBar(
+                                          content: Text('Successfully cashed in PHP ${amount.toStringAsFixed(2)}'),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+                                      
+                                      // Navigate back to home
+                                      navigator.pushReplacementNamed('/home');
+                                      
+                                    } catch (e) {
+                                      // Check if widget is still mounted before using context
+                                      if (!mounted) return;
+                                      
+                                      // Close loading dialog
+                                      navigator.pop();
+                                      
+                                      // Show error message
+                                      scaffoldMessenger.showSnackBar(
+                                        SnackBar(
+                                          content: Text('Error: ${e.toString()}'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
                                   }
                                 : null, // ✅ disables button when false
                             style: TextButton.styleFrom(

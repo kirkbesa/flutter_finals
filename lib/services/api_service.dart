@@ -139,13 +139,57 @@ class ApiService {
     }
   }
 
-  // Send money
-  static Future<Map<String, dynamic>> sendMoney(String recipient, double amount, String description) async {
+  // Cash in
+  static Future<Map<String, dynamic>> cashIn(double amount, String description) async {
     try {
+      print('CashIn API called with amount: $amount, description: $description');
+      
       final token = await getToken();
       if (token == null) {
         throw Exception('No authentication token');
       }
+
+      print('Token retrieved, making API call...');
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/cash-in'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'amount': amount,
+          'description': description,
+        }),
+      );
+
+      print('API response status: ${response.statusCode}');
+      print('API response body: ${response.body}');
+
+      final data = jsonDecode(response.body);
+      
+      if (response.statusCode == 200) {
+        return data;
+      } else {
+        throw Exception(data['error'] ?? 'Failed to cash in');
+      }
+    } catch (e) {
+      print('CashIn API error: $e');
+      throw Exception('Network error: $e');
+    }
+  }
+
+  // Send money
+  static Future<Map<String, dynamic>> sendMoney(String recipient, double amount, String description) async {
+    try {
+      print('SendMoney API called with recipient: $recipient, amount: $amount, description: $description');
+      
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No authentication token');
+      }
+
+      print('Token retrieved, making API call...');
 
       final response = await http.post(
         Uri.parse('$baseUrl/send-money'),
@@ -160,6 +204,9 @@ class ApiService {
         }),
       );
 
+      print('API response status: ${response.statusCode}');
+      print('API response body: ${response.body}');
+
       final data = jsonDecode(response.body);
       
       if (response.statusCode == 200) {
@@ -168,6 +215,7 @@ class ApiService {
         throw Exception(data['error'] ?? 'Failed to send money');
       }
     } catch (e) {
+      print('SendMoney API error: $e');
       throw Exception('Network error: $e');
     }
   }

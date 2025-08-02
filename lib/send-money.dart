@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'account-state.dart';
+import 'services/api_service.dart';
 
 class SendMoney extends StatefulWidget {
   const SendMoney({super.key});
@@ -222,7 +223,7 @@ class _SendMoneyState extends State<SendMoney> {
                                                     'Enter name or number',
                                                 hintStyle: TextStyle(
                                                   color: Colors.grey
-                                                      .withOpacity(0.7),
+                                                      .withValues(alpha: 0.7),
                                                 ),
                                                 border: InputBorder.none,
                                                 counterText:
@@ -419,16 +420,75 @@ class _SendMoneyState extends State<SendMoney> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       _validateAmount(); // Re-validate the amount
                     
                       // Only proceed if there is no amount error and the button should be shown
                       if (!_showAmountError && _showNextButton) {
-                        print('Phone: ${_phoneController.text}');
-                        print('Amount: ${_amountController.text}');
-                        context.read<AccountState>().balance -=
-                            double.tryParse(_amountController.text) ?? 0;
-                        print('${context.read<AccountState>().balance}');
+                        final recipient = _phoneController.text;
+                        final amount = double.tryParse(_amountController.text) ?? 0;
+                        final scaffoldMessenger = ScaffoldMessenger.of(context);
+                        final navigator = Navigator.of(context);
+                        final accountState = context.read<AccountState>();
+                        
+                        try {
+                          // Show loading dialog
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return const AlertDialog(
+                                content: Row(
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(width: 20),
+                                    Text("Sending money..."),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+
+                          // Call send money API
+                          print('Calling send money API with recipient: $recipient, amount: $amount');
+                          final result = await ApiService.sendMoney(recipient, amount, 'Send Money');
+                          print('Send money API result: $result');
+                          
+                          // Check if widget is still mounted before using context
+                          if (!mounted) return;
+                          
+                          // Update local state
+                          accountState.balance = result['newBalance'];
+                          
+                          // Close loading dialog
+                          navigator.pop();
+                          
+                          // Show success message
+                          scaffoldMessenger.showSnackBar(
+                            SnackBar(
+                              content: Text('Successfully sent PHP ${amount.toStringAsFixed(2)} to $recipient'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          
+                          // Navigate back to home
+                          navigator.pushReplacementNamed('/home');
+                          
+                        } catch (e) {
+                          // Check if widget is still mounted before using context
+                          if (!mounted) return;
+                          
+                          // Close loading dialog
+                          navigator.pop();
+                          
+                          // Show error message
+                          scaffoldMessenger.showSnackBar(
+                            SnackBar(
+                              content: Text('Error: ${e.toString()}'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

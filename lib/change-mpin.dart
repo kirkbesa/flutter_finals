@@ -142,7 +142,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                       Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1f71fa),
+                      backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
@@ -172,7 +172,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text('Change MPIN'),
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -254,6 +254,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 labelText: 'Confirm New MPIN',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -276,7 +277,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _updateMpin,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[800],
+                  backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -300,18 +301,18 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
+                color: Theme.of(context).primaryColor.withValues(alpha:0.1),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue[200]!),
+                border: Border.all(color: Theme.of(context).primaryColor.withValues(alpha:0.5)),
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'MPIN Requirements:',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   SizedBox(height: 8),

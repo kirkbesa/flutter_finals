@@ -207,6 +207,17 @@ class _BPICashInState extends State<BPICashIn> {
                                     final accountState = context.read<AccountState>();
                                     
                                     try {
+                                      
+                                      if (amount <= 0) {
+                                        scaffoldMessenger.showSnackBar(
+                                          SnackBar(
+                                            content: Text('Please enter a valid amount'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        return;
+                                      }
+
                                       // Show loading dialog
                                       showDialog(
                                         context: context,

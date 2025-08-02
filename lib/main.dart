@@ -28,12 +28,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color customBlue = Color(0xFF0380FF);
+    const Color customBlue = Color.fromARGB(255, 0, 57, 172);
 
     return MaterialApp(
       title: 'Basic Flutter App',
       theme: ThemeData(
-        primaryColor: customBlue,
+        primaryColor: const Color.fromARGB(255, 0, 0, 0),
         scaffoldBackgroundColor: customBlue.withOpacity(0.1),
         primarySwatch: MaterialColor(customBlue.value, {
           50: customBlue.withOpacity(0.1),

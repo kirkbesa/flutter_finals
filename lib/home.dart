@@ -101,14 +101,14 @@ class Home extends StatelessWidget {
                                               style: TextStyle(
                                                 fontFamily: 'Poppins',
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.blue[300],
+                                                color: Colors.white.withValues(alpha: 0.5),
                                                 fontSize: 14,
                                               ),
                                             ),
                                             Icon(
                                               Icons.remove_red_eye_outlined,
                                               size: 18,
-                                              color: Colors.blue[300],
+                                              color: Colors.white.withValues(alpha: 0.5),
                                             ),
                                           ],
                                         ),
@@ -144,7 +144,7 @@ class Home extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontFamily: 'Poppins',
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.blue,
+                                                    color: customBlue,
                                                     fontSize: 14,
                                                   ),
                                                 ),

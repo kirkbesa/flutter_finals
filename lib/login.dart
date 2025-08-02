@@ -21,12 +21,18 @@ class MyApp extends StatelessWidget {
 
 class Login extends StatelessWidget {
   const Login({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+
+    Color customBlue = Theme.of(context).primaryColor;
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    
     return Scaffold(
+      key: scaffoldKey,
       body: Container(
-        color: const Color(0xFF1f71fa), // Blue background color
+        color: customBlue, // Blue background color
         child: Column(
           children: [
             // Top Part
@@ -59,11 +65,11 @@ class Login extends StatelessWidget {
                         width: 250,
                         height: 55,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1168f1),
-                          border: Border.all(color: Colors.blue, width: 1),
+                          color: customBlue,
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1),
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +86,7 @@ class Login extends StatelessWidget {
                               Icon(
                                 Icons.swap_horiz_rounded,
                                 size: 30,
-                                color: Colors.blue,
+                                color: Colors.white.withValues(alpha: 0.8),
                               ),
                             ],
                           ),
@@ -98,7 +104,10 @@ class Login extends StatelessWidget {
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
                         builder: (BuildContext context) {
-                          return MPINLoginDrawer();
+                          return MPINLoginDrawer(
+                            scaffoldContext: context,
+                            scaffoldKey: scaffoldKey,
+                          );
                         },
                       );
                     },
@@ -110,7 +119,7 @@ class Login extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +127,7 @@ class Login extends StatelessWidget {
                             Icon(
                               Icons.dialpad_sharp,
                               size: 60,
-                              color: Colors.blue,
+                              color: customBlue,
                             ),
                             SizedBox(height: 20),
                             Text(
@@ -126,7 +135,7 @@ class Login extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w600,
-                                color: Colors.blue,
+                                color: customBlue,
                                 fontSize: 14,
                               ),
                             ),
@@ -180,7 +189,9 @@ class Login extends StatelessWidget {
 }
 
 class MPINLoginDrawer extends StatefulWidget {
-  const MPINLoginDrawer({super.key});
+  final BuildContext scaffoldContext;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const MPINLoginDrawer({super.key, required this.scaffoldContext, required this.scaffoldKey});
 
   @override
   _MPINLoginDrawerState createState() => _MPINLoginDrawerState();
@@ -211,22 +222,31 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
       final accountState = context.read<AccountState>();
       
       try {
+        print('Attempting login with PIN: ${pin.join()}');
         final success = await accountState.login(phoneNumber, pin.join());
         
         // Check if widget is still mounted before accessing context
         if (!mounted) return;
         
+        print('Login result: $success, Error: ${accountState.error}');
+        
         if (success) {
           // Navigate to the home page if login is successful
           Navigator.pushReplacementNamed(context, '/home');
         } else {
-          // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(accountState.error ?? 'Login failed'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          // Show error message using the correct context
+          print('Showing error snackbar: ${accountState.error ?? 'Login failed'}');
+          // Close the modal first, then show snackbar
+          Navigator.pop(context);
+          Future.delayed(const Duration(milliseconds: 100), () {
+            ScaffoldMessenger.of(widget.scaffoldContext).showSnackBar(
+              SnackBar(
+                content: Text(accountState.error ?? 'Login failed'),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          });
           // Reset Pin
           setState(() {
             pin.clear();
@@ -236,12 +256,18 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
         // Check if widget is still mounted before accessing context
         if (!mounted) return;
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        print('Login exception: $e');
+        // Close the modal first, then show snackbar
+        Navigator.pop(context);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          ScaffoldMessenger.of(widget.scaffoldContext).showSnackBar(
+            SnackBar(
+              content: Text('Error: $e'),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        });
         setState(() {
           pin.clear();
         });
@@ -251,6 +277,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Color customBlue = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
         // Close the bottom sheet when tapping outside
@@ -278,7 +305,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                     padding: const EdgeInsets.all(4.0),
                     child: CircleAvatar(
                       backgroundColor: index < pin.length
-                          ? Colors.blue
+                          ? customBlue
                           : Colors.blueGrey,
                       radius: 6,
                     ),
@@ -301,7 +328,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -318,7 +345,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -335,7 +362,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -357,7 +384,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -374,7 +401,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -391,7 +418,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -413,7 +440,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -430,7 +457,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -447,7 +474,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -466,7 +493,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -483,7 +510,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue,
+                        color: customBlue,
                         fontSize: 25,
                       ),
                     ),
@@ -492,7 +519,7 @@ class _MPINLoginDrawerState extends State<MPINLoginDrawer> {
                     onPressed: () {
                       _removeDigit();
                     },
-                    child: Icon(Icons.backspace, size: 20, color: Colors.blue),
+                    child: Icon(Icons.backspace, size: 20, color: customBlue),
                   ),
                 ],
               ),

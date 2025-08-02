@@ -9,12 +9,12 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-            color: Colors.blue[800],
+            color: Theme.of(context).primaryColor,
             child: Row(
               children: [
                 CircleAvatar(
@@ -31,12 +31,13 @@ class Profile extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins'),
                     ),
                     SizedBox(height: 5),
                     Text(
                       "092738039355",
-                      style: TextStyle(color: Colors.white70),
+                      style: TextStyle(color: Colors.white70, fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -84,8 +85,8 @@ class Profile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: Icon(icon, color: Colors.blue[800]),
-          title: Text(label),
+          leading: Icon(icon, color: Theme.of(context).primaryColor),
+          title: Text(label, style: TextStyle(fontFamily: 'Poppins')),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
           onTap: () async {
             if (isLogout) {
@@ -125,7 +126,7 @@ class Profile extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(true),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1f71fa),
+                                backgroundColor: Theme.of(context).primaryColor,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(24),
@@ -147,7 +148,7 @@ class Profile extends StatelessWidget {
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
                             style: TextButton.styleFrom(
-                              foregroundColor: const Color(0xFF1f71fa),
+                              foregroundColor: Theme.of(context).primaryColor,
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             ),
                             child: const Text(

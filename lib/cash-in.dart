@@ -142,11 +142,11 @@ Widget _bankButton({
           Expanded(
             child: Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Karla',
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF0333bd),
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

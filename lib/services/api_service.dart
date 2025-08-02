@@ -228,6 +228,10 @@ class ApiService {
         throw Exception('No authentication token');
       }
 
+      if (balance < 0 || balance == 0) {
+        throw Exception('Balance cannot be negative or zero');
+      }
+
       final response = await http.put(
         Uri.parse('$baseUrl/balance'),
         headers: {

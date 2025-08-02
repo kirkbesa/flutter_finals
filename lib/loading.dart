@@ -39,8 +39,11 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    Color customBlue = Theme.of(context).primaryColor;
+
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: customBlue,
       body: FadeTransition(
         opacity: _opacity,
         child: const Center(

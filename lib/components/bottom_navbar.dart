@@ -7,6 +7,8 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Color customBlue = Theme.of(context).primaryColor;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -65,12 +67,12 @@ class BottomNavBar extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
-              border: Border.all(color: Colors.blue, width: 3.0),
+              border: Border.all(color: customBlue, width: 3.0),
             ),
             child: IconButton(
               icon: Icon(
                 Icons.qr_code_scanner_rounded,
-                color: Colors.blue.withOpacity(1),
+                color: customBlue,
                 size: 30,
               ),
               onPressed: () {
